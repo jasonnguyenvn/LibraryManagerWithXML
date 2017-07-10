@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Context antiJARLocking="true" path="/LibraryManager">
-  <Resource auth="Container" driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver" maxActive="8" maxIdle="4" name="LibraryManagerDB" password="123456" type="javax.sql.DataSource" url="jdbc:sqlserver://localhost\SQL2008:1433;databaseName=LibraryManagerDB" username="sa"/>
-</Context>
