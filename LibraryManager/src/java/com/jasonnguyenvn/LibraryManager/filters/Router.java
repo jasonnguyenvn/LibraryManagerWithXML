@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 public class Router implements Filter {
     private static final boolean debug = true;
     private final String loginPage = "login.html";
+    private final String homepage = "login.html";
     private FilterConfig filterConfig = null;
 
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -34,7 +35,7 @@ public class Router implements Filter {
             FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String uri = httpRequest.getRequestURI();
-        String url = loginPage;
+        String url = homepage;
         
         try {
             int lastIndex = uri.lastIndexOf("/");
