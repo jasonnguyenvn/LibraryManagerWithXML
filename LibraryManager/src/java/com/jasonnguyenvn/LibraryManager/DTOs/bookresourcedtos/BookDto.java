@@ -9,8 +9,11 @@ package com.jasonnguyenvn.LibraryManager.DTOs.bookresourcedtos;
 import com.jasonnguyenvn.LibraryManager.DTOs.SearchResultElementDto;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessOrder;
+import javax.xml.bind.annotation.XmlAccessorOrder;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  *
@@ -27,8 +30,29 @@ public class BookDto implements SearchResultElementDto {
     private String publisher;
     
     private String tags;
+
+    public BookDto() {
+    }
+
+    public BookDto(int id, String booktitle, String author, Double price, 
+            String description, int year, String publisher, String tags) {
+        this.id = id;
+        this.booktitle = booktitle;
+        this.author = author;
+        this.price = price;
+        this.description = description;
+        this.year = year;
+        this.publisher = publisher;
+        this.tags = tags;
+        
+        //copies = new ArrayList<BookcopyDto>();
+    }
+    
+    
     
     private List<BookcopyDto> copies;
+    
+    
 
     @XmlElement
     public int getId() {

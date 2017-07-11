@@ -30,8 +30,11 @@ public abstract class AbstractDbDao {
     private Connection connection;
     
     protected void openConnection() throws NamingException, SQLException {
-        Connection con = null;
-        con = DBUtilities.makeConnection();
+        if (isConnectionOpened()) {
+            connection.close();
+            connection = null;
+        }
+        connection = DBUtilities.makeConnection();
     }
     
     protected void closeConnection() throws SQLException {
@@ -53,8 +56,9 @@ public abstract class AbstractDbDao {
         return !connection.isClosed();
     }
     
-    public <T> T executeSelect(PrepareStatementCallback prepareStatementCallback,
-            ProcessResultSetCallback<T> processResultSetCallback) 
+    protected <T> T executeSelect(PrepareStatementCallback prepareStatementCallback,
+            ProcessResultSetCallback<T> processResultSetCallback, 
+            Object ... parameters) 
             throws SQLException, NamingException {
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -63,6 +67,7 @@ public abstract class AbstractDbDao {
         try {
             this.openConnection();
             if (isConnectionOpened()) {
+                prepareStatementCallback.setParameters(parameters);
                 stm = prepareStatementCallback.process(connection);
                 if (stm != null) {
                     rs = stm.executeQuery();
