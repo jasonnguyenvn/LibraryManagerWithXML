@@ -6,7 +6,7 @@
     </filter>
     <filter-mapping>
         <filter-name>Router</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/* NOT /api/*</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
@@ -24,6 +24,15 @@
         <servlet-name>UpdateRecordServlet</servlet-name>
         <servlet-class>com.jasonnguyenvn.LibraryManager.servlets.UpdateRecordServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletAdaptor</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>javax.ws.rs.Application</param-name>
+            <param-value>com.jasonnguyenvn.LibraryManager.servlets.services.ApplicationConfig</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -39,6 +48,10 @@
     <servlet-mapping>
         <servlet-name>UpdateRecordServlet</servlet-name>
         <url-pattern>/UpdateRecordServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletAdaptor</servlet-name>
+        <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

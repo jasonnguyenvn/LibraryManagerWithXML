@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 public class Router implements Filter {
     private static final boolean debug = true;
     private final String loginPage = "login.html";
-    private final String homepage = "login.html";
+    private final String homepage = "index.html";
     private FilterConfig filterConfig = null;
 
     public void init(FilterConfig filterConfig) throws ServletException {
