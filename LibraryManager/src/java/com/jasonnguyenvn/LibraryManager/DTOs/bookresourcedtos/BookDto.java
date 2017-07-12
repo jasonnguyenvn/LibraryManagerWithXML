@@ -8,6 +8,7 @@ package com.jasonnguyenvn.LibraryManager.DTOs.bookresourcedtos;
 
 import com.jasonnguyenvn.LibraryManager.DTOs.SearchResultElementDto;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessOrder;
 import javax.xml.bind.annotation.XmlAccessorOrder;
@@ -50,7 +51,7 @@ public class BookDto implements SearchResultElementDto {
     
     
     
-    private List<BookcopyDto> copies;
+    private Copies copies;
     
     
 
@@ -95,7 +96,7 @@ public class BookDto implements SearchResultElementDto {
     }
 
     @XmlElement
-    public List<BookcopyDto> getCopies() {
+    public Copies getCopies() {
         return copies;
     }
 
@@ -131,20 +132,29 @@ public class BookDto implements SearchResultElementDto {
         this.tags = tags;
     }
 
-    public void addNewCopy(BookcopyDto copyDto) {
-        if (copies == null) {
-            copies = new ArrayList<BookcopyDto>();
-        }
-        copies.add(copyDto);
+    /*public void addNewCopy(BookcopyDto copyDto) {
+    if (copies == null) {
+    copies = new ArrayList<BookcopyDto>();
+    }
+    copies.add(copyDto);    
+    }
+    public void addNewCopies(BookcopyDto ... copyDtos) {
+    if (copies == null) {
+    copies = new ArrayList<BookcopyDto>();
+    }
+    for (BookcopyDto dto : copyDtos) {
+    copies.add(dto);
+    }
+    }
+    public void setCopies(List<BookcopyDto> copies) {
+    this.copies = copies;
+    }*/
+    public void setCopies(Copies copies) {
+        this.copies = copies;
     }
     
-    public void addNewCopies(BookcopyDto ... copyDtos) {
-        if (copies == null) {
-            copies = new ArrayList<BookcopyDto>();
-        }
-        for (BookcopyDto dto : copyDtos) {
-            copies.add(dto);
-        }
-    }
+    
+    
+    
     
 }

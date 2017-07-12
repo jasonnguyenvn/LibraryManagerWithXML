@@ -22,6 +22,16 @@ public class BookcopyDto implements Serializable {
     private String code;
     private List<CeilDto> storedin;
 
+    public BookcopyDto(int id, String code) {
+        this.id = id;
+        this.code = code;
+    }
+
+    public BookcopyDto() {
+    }
+    
+    
+
     @XmlElement
     public int getId() {
         return id;

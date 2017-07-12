@@ -49,6 +49,9 @@ public class BookResource {
     
     public static final String SEARCH_BY_BOOKTITLE = "BOOTITLE";
     public static final String SEARCH_BY_AUTHOR = "AUTHOR";
+    public static final String SEARCH_BY_PUBLISHER = "PUBLISHER";
+    
+    
     /**
      * Retrieves representation of an instance of com.jasonnguyenvn.LibraryManager.servlets.services.BookResource
      * @param searchby Search books by title.
@@ -75,7 +78,10 @@ public class BookResource {
                 dao.searchByBookTitle(searchvalue, pagesize, page);
             } else if (searchby.equals(SEARCH_BY_AUTHOR)) {
                 dao.searchByAuthor(searchvalue, pagesize, page);
+            } else if (searchby.equals(SEARCH_BY_PUBLISHER)) {
+                dao.searchByPublisher(searchvalue, pagesize, page);
             }
+                    
             searchResult = dao.getSearchResult();
         } catch (SQLException ex) {
             Logger.getLogger(BookResource.class.getName()).log(Level.SEVERE, null, ex);

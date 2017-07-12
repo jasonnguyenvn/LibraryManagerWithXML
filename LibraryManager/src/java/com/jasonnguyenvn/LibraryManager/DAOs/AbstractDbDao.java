@@ -24,49 +24,23 @@ public abstract class AbstractDbDao {
     }
     
     public static interface ProcessResultSetCallback<T> {
-         T process(ResultSet rs)  throws SQLException;
+         T process(ResultSet rs)  throws SQLException, NamingException;
     }
     
-    private Connection connection;
-    
-    protected void openConnection() throws NamingException, SQLException {
-        if (isConnectionOpened()) {
-            connection.close();
-            connection = null;
-        }
-        connection = DBUtilities.makeConnection();
-    }
-    
-    protected void closeConnection() throws SQLException {
-        if (connection != null) {
-            connection.close();
-        }
-    }
-
-    protected Connection getConnection() {
-        return connection;
-    }
-    
-    protected boolean isConnectionOpened() throws SQLException {
-        if (connection == null) {
-            return false;
-        }
-        
-        
-        return !connection.isClosed();
-    }
+   
     
     protected <T> T executeSelect(PrepareStatementCallback prepareStatementCallback,
             ProcessResultSetCallback<T> processResultSetCallback, 
             Object ... parameters) 
             throws SQLException, NamingException {
+        Connection connection = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         T result = null;
         
         try {
-            this.openConnection();
-            if (isConnectionOpened()) {
+            connection = DBUtilities.makeConnection();
+            if (connection != null) {
                 prepareStatementCallback.setParameters(parameters);
                 stm = prepareStatementCallback.process(connection);
                 if (stm != null) {
@@ -81,7 +55,10 @@ public abstract class AbstractDbDao {
             if (stm != null) {
                 stm.close();
             }
-            this.closeConnection();
+            if (connection != null) {
+                connection.close();
+            } 
+                    
         }
         
         

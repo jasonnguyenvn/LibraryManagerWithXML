@@ -2,6 +2,26 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/Hau/Documents/XML/repo/LibraryManagerWithXML/LibraryManager/web/index.html</file>
+            <file>file:/C:/Users/Hau/Documents/XML/repo/LibraryManagerWithXML/LibraryManager/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/Hau/Documents/XML/repo/LibraryManagerWithXML/LibraryManager/src/conf/MANIFEST.MF</file>
+            <file>file:/C:/Users/Hau/Documents/XML/repo/LibraryManagerWithXML/LibraryManager/src/java/com/jasonnguyenvn/LibraryManager/DTOs/bookresourcedtos/BookshelfDto.java</file>
+            <file>file:/C:/Users/Hau/Documents/XML/repo/LibraryManagerWithXML/LibraryManager/src/java/com/jasonnguyenvn/LibraryManager/servlets/SearchServlet.java</file>
+            <file>file:/C:/Users/Hau/Documents/XML/repo/LibraryManagerWithXML/LibraryManager/src/java/com/jasonnguyenvn/LibraryManager/DTOs/UserDTO.java</file>
+            <file>file:/C:/Users/Hau/Documents/XML/repo/LibraryManagerWithXML/LibraryManager/src/java/com/jasonnguyenvn/LibraryManager/DTOs/SearchResultElementDto.java</file>
+            <file>file:/C:/Users/Hau/Documents/XML/repo/LibraryManagerWithXML/LibraryManager/src/java/com/jasonnguyenvn/LibraryManager/servlets/LoginServlet.java</file>
+            <file>file:/C:/Users/Hau/Documents/XML/repo/LibraryManagerWithXML/LibraryManager/src/java/com/jasonnguyenvn/LibraryManager/servlets/UpdateRecordServlet.java</file>
+            <file>file:/C:/Users/Hau/Documents/XML/repo/LibraryManagerWithXML/LibraryManager/src/java/com/jasonnguyenvn/LibraryManager/DAOs/BookResourceDao.java</file>
+            <file>file:/C:/Users/Hau/Documents/XML/repo/LibraryManagerWithXML/LibraryManager/src/java/com/jasonnguyenvn/LibraryManager/DTOs/SearchPagingDto.java</file>
+            <file>file:/C:/Users/Hau/Documents/XML/repo/LibraryManagerWithXML/LibraryManager/src/java/com/jasonnguyenvn/LibraryManager/filters/Router.java</file>
+            <file>file:/C:/Users/Hau/Documents/XML/repo/LibraryManagerWithXML/LibraryManager/src/java/com/jasonnguyenvn/LibraryManager/servlets/services/BookResource.java</file>
+            <file>file:/C:/Users/Hau/Documents/XML/repo/LibraryManagerWithXML/LibraryManager/src/java/com/jasonnguyenvn/LibraryManager/DTOs/bookresourcedtos/CeilDto.java</file>
+            <file>file:/C:/Users/Hau/Documents/XML/repo/LibraryManagerWithXML/LibraryManager/src/java/com/jasonnguyenvn/LibraryManager/DAOs/AbstractDbDao.java</file>
+            <file>file:/C:/Users/Hau/Documents/XML/repo/LibraryManagerWithXML/LibraryManager/src/java/com/jasonnguyenvn/LibraryManager/DTOs/bookresourcedtos/BookDto.java</file>
+            <file>file:/C:/Users/Hau/Documents/XML/repo/LibraryManagerWithXML/LibraryManager/src/java/com/jasonnguyenvn/LibraryManager/DTOs/bookresourcedtos/BookcopyDto.java</file>
+            <file>file:/C:/Users/Hau/Documents/XML/repo/LibraryManagerWithXML/LibraryManager/src/java/com/jasonnguyenvn/LibraryManager/servlets/services/ApplicationConfig.java</file>
+            <file>file:/C:/Users/Hau/Documents/XML/repo/LibraryManagerWithXML/LibraryManager/src/java/com/jasonnguyenvn/LibraryManager/servlets/DeleteRecordServlet.java</file>
+        </group>
     </open-files>
 </project-private>
