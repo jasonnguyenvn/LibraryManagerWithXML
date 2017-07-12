@@ -18,10 +18,24 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class CeilDto implements Serializable {
     private int id;
     private int row;
-    private int col;
+    private String col;
     private String description;
     private int size;
     private String tags;
+
+    public CeilDto() {
+    }
+
+    public CeilDto(int id, int row, String col, String description, int size, String tags) {
+        this.id = id;
+        this.row = row;
+        this.col = col;
+        this.description = description;
+        this.size = size;
+        this.tags = tags;
+    }
+    
+    
     
     private BookshelfDto ceilof;
 
@@ -36,7 +50,7 @@ public class CeilDto implements Serializable {
     }
 
     @XmlElement
-    public int getCol() {
+    public String getCol() {
         return col;
     }
 
@@ -71,7 +85,7 @@ public class CeilDto implements Serializable {
         this.row = row;
     }
 
-    public void setCol(int col) {
+    public void setCol(String col) {
         this.col = col;
     }
 

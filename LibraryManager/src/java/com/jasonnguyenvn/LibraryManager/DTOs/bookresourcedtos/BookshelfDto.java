@@ -21,6 +21,18 @@ public class BookshelfDto implements Serializable  {
     private String description;
     private String tags;
 
+    public BookshelfDto() {
+    }
+
+    public BookshelfDto(int id, String title, String description, String tags) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.tags = tags;
+    }
+    
+    
+
     @XmlElement
     public int getId() {
         return id;

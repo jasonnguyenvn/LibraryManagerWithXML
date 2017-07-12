@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class BookcopyDto implements Serializable {
     private int id;
     private String code;
-    private List<CeilDto> storedin;
+    private CeilDto storedin;
 
     public BookcopyDto(int id, String code) {
         this.id = id;
@@ -43,7 +43,7 @@ public class BookcopyDto implements Serializable {
     }
 
     @XmlElement
-    public List<CeilDto> getStoredin() {
+    public CeilDto getStoredin() {
         return storedin;
     }
 
@@ -54,14 +54,13 @@ public class BookcopyDto implements Serializable {
     public void setCode(String code) {
         this.code = code;
     }
-    
-    public void addStoringCeil(CeilDto ceilDto) {
-        if (storedin == null) {
-            storedin = new ArrayList<CeilDto>();
-        }
-        
-        storedin.add(ceilDto);
+
+    public void setStoredin(CeilDto storedin) {
+        this.storedin = storedin;
     }
+   
+    
+    
     
     
     

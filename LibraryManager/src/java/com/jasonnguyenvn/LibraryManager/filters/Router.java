@@ -33,25 +33,35 @@ public class Router implements Filter {
 
     public void doFilter(ServletRequest request, ServletResponse response, 
             FilterChain chain) throws IOException, ServletException {
+        request.setCharacterEncoding("UTF-8");
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String uri = httpRequest.getRequestURI();
         String url = homepage;
         
         try {
-            int lastIndex = uri.lastIndexOf("/");
-            String resource = uri.substring(lastIndex + 1);
+            System.out.println("ahihi uri " + uri);
+            int apiIndex = uri.lastIndexOf("/api");
+            if (apiIndex <= 0) {
             
-            if (resource.length() > 0) {
-                url = resource.substring(0, 1).toUpperCase()
-                        + resource.substring(1)
-                        + "Servlet";
-                if (resource.lastIndexOf(".html") > 0 ||
-                        resource.lastIndexOf(".jsp") > 0) {
-                    url = resource;
+                int lastIndex = uri.lastIndexOf("/");
+                String resource = uri.substring(lastIndex + 1);
+
+                if (resource.length() > 0) {
+                    url = resource.substring(0, 1).toUpperCase()
+                            + resource.substring(1)
+                            + "Servlet";
+                    if (resource.lastIndexOf(".html") > 0 ||
+                            resource.lastIndexOf(".jsp") > 0
+                            ) {
+                        url = resource;
+                    }
                 }
+            } else {
+                url = null;
             }
             
             if (url != null) {
+                System.out.println("Forward to " + url);
                 RequestDispatcher rd = httpRequest.getRequestDispatcher(url);
                 rd.forward(request, response);
             } else {

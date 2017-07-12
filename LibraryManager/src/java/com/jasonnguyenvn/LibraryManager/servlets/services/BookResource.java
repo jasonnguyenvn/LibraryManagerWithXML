@@ -47,9 +47,11 @@ public class BookResource {
     public BookResource() {
     }
     
-    public static final String SEARCH_BY_BOOKTITLE = "BOOTITLE";
+    public static final String SEARCH_BY_BOOKTITLE = "BOOKTITLE";
     public static final String SEARCH_BY_AUTHOR = "AUTHOR";
     public static final String SEARCH_BY_PUBLISHER = "PUBLISHER";
+    public static final String SEARCH_BY_YEAR = "YEAR";
+    
     
     
     /**
@@ -73,13 +75,18 @@ public class BookResource {
         Collection<BookDto> searchResult = null;
         BookResourceDao dao = new BookResourceDao();
         try {
+            
+            System.out.println("SEARCH " + searchvalue);
             searchvalue = URLDecoder.decode(searchvalue, "UTF-8");
+            System.out.println("SEARCH " + searchvalue);
             if (searchby.equals(SEARCH_BY_BOOKTITLE)) {
                 dao.searchByBookTitle(searchvalue, pagesize, page);
             } else if (searchby.equals(SEARCH_BY_AUTHOR)) {
                 dao.searchByAuthor(searchvalue, pagesize, page);
             } else if (searchby.equals(SEARCH_BY_PUBLISHER)) {
                 dao.searchByPublisher(searchvalue, pagesize, page);
+            } else if (searchby.equals(SEARCH_BY_YEAR)) {
+                dao.searchByYear(searchvalue, pagesize, page);
             }
                     
             searchResult = dao.getSearchResult();
@@ -98,25 +105,6 @@ public class BookResource {
         return searchResult;
     }
     
-    protected Collection<BookDto> searchByBooktitle(String searchvalue, 
-            Integer pagesize, Integer page) {
-        Collection<BookDto> searchResult = null;
-        BookResourceDao dao = new BookResourceDao();
-        try {
-            dao.searchByBookTitle(searchvalue, pagesize, page);
-            searchResult = dao.getSearchResult();
-        } catch (SQLException ex) {
-            Logger.getLogger(BookResource.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NamingException ex) {
-            Logger.getLogger(BookResource.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        if (searchResult == null) {
-            return  null;
-        }
-        
-        return searchResult;
-    }
 
     
 }
