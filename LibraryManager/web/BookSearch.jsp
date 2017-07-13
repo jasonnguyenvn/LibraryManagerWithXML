@@ -15,45 +15,50 @@
         <link rel="stylesheet" href="main.css" />
     </head>
     <body>
+        <c:import url="WEB-INF/UserInfo.xsl"  var="userxsldoc" charEncoding="UTF-8" />
         <div id="nav-bar">
             <div class="nav-bar-wrapper">
-            <div id="logo">
-                <a href="./">
-                Trang chủ
-                </a>
-            </div>
+                <div id="logo">
+                    <a href="./">
+                    Trang chủ
+                    </a>
+                </div>
+                <div id="userInfo">
+                    <c:if test="${not empty sessionScope.USERINFO }">
+                        <x:parse var="USERINFO" xml="${sessionScope.USERINFO}" />
+                        Xin chào, 
+                        <b><x:out select="$USERINFO//fullname"/></b>
+                    </c:if>
+                </div>
             </div>
         </div>
-        <div id="searchBox">
-            <form action="searchBook"  accept-charset="UTF-8" method="get">
-                <div id="searchControlCont">
-                    <input type="text" name="txtSearchValue" value="${param.txtSearchValue}">
-                    <input type="submit" name="btnAction" value="Tìm">
-                </div>
-                <div id="searchFilterCont">
-                Tìm kiếm bằng:
-                    <select name="cbxSearchBy" required>
-                        <option value="booktitle"
-                            <c:if test="${param.cbxSearchBy == 'booktitle'}">selected="selected"</c:if>
-                        >Tựa sách</option>
-                        <option value="author"
-                            <c:if test="${param.cbxSearchBy == 'author'}">selected="selected"</c:if>
-                        >Tác giả</option>
-                        <option value="publisher"
-                            <c:if test="${param.cbxSearchBy == 'publisher'}">selected="selected"</c:if>
-                        >Nhà xuất bản</option>
-                        <option value="year"
-                            <c:if test="${param.cbxSearchBy == 'year'}">selected="selected"</c:if>
-                        >Năm xuất bản</option>
-                     </select>
-                </div>
-            </form>
+         <div id="home-main-container">
+            <div id="searchBox">
+                <h3>Bạn muốn đọc gì nữa?</h3>
+                <form action="searchBook"  accept-charset="UTF-8" method="get">
+                    <div id="searchControlCont">
+                        <input class="search-value" type="text" name="txtSearchValue" 
+                               value="${param.txtSearchValue}">
+                        <input type="submit" name="btnAction" value="Tìm sách">
+                    </div>
+                    <div id="searchFilterCont">
+                    Tìm kiếm bằng:
+                        <select name="cbxSearchBy" required>
+                            <option value="booktitle">Tựa sách</option>
+                            <option value="author">Tác giả</option>
+                            <option value="publisher">Nhà xuất bản</option>
+                            <option value="year">Năm xuất bản</option>
+                         </select>
+                    </div>
+                </form>
+            </div>
         </div>
         <div id="main">
             <h1>Kết quả tìm kiếm</h1>
             <c:import url="WEB-INF/BookSearch.xsl"  var="xsldoc" charEncoding="UTF-8" />
+            
             Từ khóa tìm kiếm <b>"${param.txtSearchValue}"</b>
-            <x:transform xml="${requestScope.SEARCHRESULT}" xslt="${xsldoc}" />
+            <x:transform xml="${requestScope.SEARCHRESULT}" xslt="${xsldoc}"/>
         </div> 
 
     </body>

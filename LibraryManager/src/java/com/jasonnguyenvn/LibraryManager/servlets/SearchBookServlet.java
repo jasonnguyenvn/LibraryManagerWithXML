@@ -59,9 +59,9 @@ public class SearchBookServlet extends HttpServlet {
                 pageSize = Integer.parseInt(pageSizeStr);
             }
             System.out.println("txtSearchValue " + txtSearchValue);
-            String apiUrl = LibraryManagerConstants.API_URL;
             String searchValue = URLEncoder.encode(txtSearchValue, "UTF-8");
             
+            String apiUrl = LibraryManagerConstants.API_URL;
             Client client = ClientBuilder.newClient();
             WebTarget target = client.target(apiUrl);
             String result = 

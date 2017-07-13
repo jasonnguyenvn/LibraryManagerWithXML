@@ -15,6 +15,7 @@
          syntax recommendation http://www.w3.org/TR/xslt 
     -->
     <xsl:template match="book">
+        <xsl:param name="userXml" />
         <html>
             <head>
                 <title>

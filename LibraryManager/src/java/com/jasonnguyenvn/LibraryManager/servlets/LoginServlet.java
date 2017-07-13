@@ -7,6 +7,8 @@
 package com.jasonnguyenvn.LibraryManager.servlets;
 
 import com.jasonnguyenvn.LibraryManager.DAOs.UserDAO;
+import com.jasonnguyenvn.LibraryManager.DAOs.UserResourceDao;
+import com.jasonnguyenvn.Utilities.LibraryManagerConstants;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -19,6 +21,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import org.glassfish.jersey.client.ClientResponse;
 
 /**
  *
@@ -27,7 +38,7 @@ import javax.servlet.http.HttpSession;
 public class LoginServlet extends HttpServlet {
 
     private final String invalidPage = "invalid.html";
-    private final String searchPage = "search.jsp";
+    private final String homePage = "./";
     
     
     /**
@@ -47,24 +58,31 @@ public class LoginServlet extends HttpServlet {
         String url = invalidPage;
         try {
             String username = request.getParameter("txtUsername");
-            String password = request.getParameter("txtPassword");
+            String password  = request.getParameter("txtPassword");
             
-            UserDAO userDAO = new UserDAO();
-            boolean result = userDAO.checkLogin(username, password);
+            MultivaluedMap<String, String> formData = new MultivaluedHashMap<String, String>();
+            formData.add("username", username);
+            formData.add("password", password);
             
-            if (result) {
-                url = searchPage;
+            String apiUrl = LibraryManagerConstants.API_URL;
+            Client client = ClientBuilder.newClient();
+            
+            
+            WebTarget target = client.target(apiUrl)
+                    .path( LibraryManagerConstants.USER_LOGIN_METHOD);
+            
+            String wsResponse = target.request(MediaType.APPLICATION_XML)
+                    .post(Entity.form(formData), String.class);
+            System.out.println("ahihi login " + wsResponse);
+            if (wsResponse != null && !wsResponse.equals("")) {
+                url = homePage;
                 HttpSession session = request.getSession();
-                session.setAttribute("USERNAME", username);
+                session.setAttribute("USERINFO", wsResponse);
             }
             
-        } catch (SQLException ex) {
-            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NamingException ex) {
-            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+            response.sendRedirect(url);
+            
+        }  finally {
             out.close();
         }
     }

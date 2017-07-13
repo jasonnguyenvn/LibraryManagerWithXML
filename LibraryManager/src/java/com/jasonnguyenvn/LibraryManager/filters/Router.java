@@ -23,8 +23,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class Router implements Filter {
     private static final boolean debug = true;
-    private final String loginPage = "login.html";
-    private final String homepage = "index.html";
+    private final String loginPage = "login.jsp";
+    private final String homepage = "index.jsp";
     private FilterConfig filterConfig = null;
 
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -50,7 +50,9 @@ public class Router implements Filter {
                     url = resource.substring(0, 1).toUpperCase()
                             + resource.substring(1)
                             + "Servlet";
-                    if (resource.lastIndexOf(".html") > 0 || resource.lastIndexOf(".css") > 0  ) {
+                    if (resource.lastIndexOf(".html") > 0 || 
+                            resource.lastIndexOf(".css") > 0|| 
+                            resource.lastIndexOf(".jsp") > 0) {
                         url = resource;
                     }
                 }

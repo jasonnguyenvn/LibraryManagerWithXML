@@ -15,4 +15,9 @@ public class LibraryManagerConstants {
     public static final String BOOK_SEARCH_METHOD = "/book/search";
     public static final String BOOK_GET_INFO_METHOD = "/book/getInfo";
     
+    
+    public static final String USER_LOGIN_METHOD = "/user/login";
+    
+    public static final String PRIVATE_KEY = "nNh/vPh6uWclMT3IWnl86Q==";
+    
 }

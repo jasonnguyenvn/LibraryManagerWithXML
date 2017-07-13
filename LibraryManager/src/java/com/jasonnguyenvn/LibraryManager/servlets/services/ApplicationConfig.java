@@ -30,6 +30,7 @@ public class ApplicationConfig extends javax.ws.rs.core.Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(com.jasonnguyenvn.LibraryManager.servlets.services.BookResource.class);
+        resources.add(com.jasonnguyenvn.LibraryManager.servlets.services.UserResource.class);
     }
     
 }

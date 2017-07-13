@@ -48,8 +48,7 @@
     </xsl:template>
     
     <xsl:template match="BookSearchResult">
-        có <xsl:value-of select="totalsize"/> kết quả.
-       
+        có <xsl:value-of select="totalsize"/> kết quả. 
         <div class="main-container">
             <div class="search-result-container">
             
