@@ -11,76 +11,142 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
     <xsl:output method="html"/>
 
-    <!-- TODO customize transformation rules 
-         syntax recommendation http://www.w3.org/TR/xslt 
-    -->
     
-    <xsl:template match="bookDtoes">
+    <xsl:template name="doPaging">
+        <xsl:param name="i"/>
+        <xsl:param name="curPage"/>
+        <xsl:param name="totalSize"/>
+        <xsl:param name="pageSize"/>
+        <xsl:param name="searchBy"/>
+        <xsl:param name="searchValue"/>
         
-        có <xsl:value-of select="count(bookDto)"/> kết quả.
-        
-        <div class="search-result-container">
-            
-            <xsl:for-each select="bookDto" >
-                <div class="book-card">
-                    <a class="clear-a">
-                        <xsl:attribute name="href">viewBookInfo?id=<xsl:value-of select="id"/></xsl:attribute>
-                        <div class="card-head">
-                                    <xsl:value-of select="booktitle"/>
-                        </div>
-                        <div class="card-body">
-                            <div class="part1">
-                                <div class="row">
-                                    <div class="left-col">
-                                        Tác giả
-                                    </div>
-                                    <div class="right-col">
-                                         <xsl:value-of select="author"/>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="left-col">
-                                        Nhà xuất bản
-                                    </div>
-                                    <div class="right-col">
-                                        <xsl:value-of select="publisher"/>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="left-col">
-                                        Năm xuất bản
-                                    </div>
-                                    <div class="right-col">
-                                        <xsl:value-of select="year"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="description-container">
-                                <div>
-                                    <b>Miêu tả:</b>
-                                </div>
-                                <div class="description">
-                                    <xsl:value-of select="description"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-foot">
-                            <div class="left-col">
-                                <b> 
-                                Có <xsl:value-of select="count(copies/bookcopy)"/> 
-                                    cuốn trong thư viện.
-                                </b>
-                            </div>
-                            <div class="right-col">
-                            </div>
-                        </div>
+        <xsl:if test="$i &lt;= $totalSize"> 
+            <xsl:choose>
+                <xsl:when test="$i = $curPage">
+                    <b><xsl:value-of select="$i" /></b>
+                </xsl:when>
+                <xsl:otherwise>
+                    <a>
+                        <xsl:attribute name="href">searchBook?pagesize=<xsl:value-of select="$pageSize"/>&amp;page=<xsl:value-of select="$i"/>&amp;txtSearchValue=<xsl:value-of select="$searchValue"/>&amp;cbxSearchBy=<xsl:value-of select="$searchBy"/></xsl:attribute>
+
+                        <xsl:value-of select="$i" /> 
                     </a>
-                </div>
-            </xsl:for-each>
+                </xsl:otherwise>
+            </xsl:choose>
+            <xsl:if test="$i &lt; $totalSize"> 
+                |
+            </xsl:if>
+            <xsl:call-template name="doPaging"> 
+                <xsl:with-param name="i" select="$i + 1"/> 
+                <xsl:with-param name="curPage" select="$curPage"/> 
+                <xsl:with-param name="totalSize" select="$totalSize"/> 
+                <xsl:with-param name="pageSize" select="$pageSize"/> 
+                <xsl:with-param name="searchBy" select="$searchBy"/> 
+                <xsl:with-param name="searchValue" select="$searchValue"/> 
+            </xsl:call-template> 
+        </xsl:if>
+    </xsl:template>
+    
+    <xsl:template match="BookSearchResult">
+        có <xsl:value-of select="totalsize"/> kết quả.
+       
+        <div class="main-container">
+            <div class="search-result-container">
+            
+                <xsl:for-each select="books/book" >
+                    <div class="book-card">
+                        <a class="clear-a">
+                            <xsl:attribute name="href">viewBookInfo?id=<xsl:value-of select="id"/></xsl:attribute>
+                            <div class="card-head">
+                                <xsl:value-of select="booktitle"/>
+                            </div>
+                            <div class="card-body">
+                                <div class="part1">
+                                    <div class="row">
+                                        <div class="left-col">
+                                            Tác giả
+                                        </div>
+                                        <div class="right-col">
+                                            <xsl:value-of select="author"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="left-col">
+                                            Nhà xuất bản
+                                        </div>
+                                        <div class="right-col">
+                                            <xsl:value-of select="publisher"/>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="left-col">
+                                            Năm xuất bản
+                                        </div>
+                                        <div class="right-col">
+                                            <xsl:value-of select="year"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="description-container">
+                                    <div>
+                                        <b>Miêu tả:</b>
+                                    </div>
+                                    <div class="description">
+                                        <xsl:value-of select="description"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-foot">
+                                <div class="left-col">
+                                    <b> 
+                                        Có <xsl:value-of select="count(copies/bookcopy)"/> 
+                                        cuốn trong thư viện.
+                                    </b>
+                                </div>
+                                <div class="right-col">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </xsl:for-each>
+            </div>
         </div>
         
+        <div class="paging-container">
+            <div class="paging-wrapper">
+            <xsl:call-template name="doPaging"> 
+                    <xsl:with-param name="i" select="number(1)"/> 
+                    <xsl:with-param name="curPage" select="page"/> 
+                    <xsl:with-param name="totalSize" select="totalsize div pagesize"/> 
+                    <xsl:with-param name="pageSize" select="pagesize"/> 
+                    <xsl:with-param name="searchBy" select="searchby"/> 
+                    <xsl:with-param name="searchValue" select="searchvalue"/> 
+            </xsl:call-template> 
+            </div>
+        </div>
        
         <style>
+            .main-container, .paging-container {
+                width: 100%;
+                min-width: 100%;
+                position: relative;
+                display: flex;
+                padding: auto;
+            }
+            
+            .paging-container {
+                width: 300px;
+                margin-top: 10px;
+            }
+            
+            .paging-container .paging-wrapper {
+                margin: auto;
+                width: 80%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                font-size: 12pt;
+            }
             .search-result-container {
                 max-width: 100%;
             }

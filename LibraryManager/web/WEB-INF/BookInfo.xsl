@@ -14,7 +14,7 @@
     <!-- TODO customize transformation rules 
          syntax recommendation http://www.w3.org/TR/xslt 
     -->
-    <xsl:template match="bookDto">
+    <xsl:template match="book">
         <html>
             <head>
                 <title>

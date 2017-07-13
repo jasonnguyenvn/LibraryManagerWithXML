@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlType;
  *
  * @author Hau
  */
-@XmlRootElement
+@XmlRootElement(name = "book")
 public class BookDto implements SearchResultElementDto {
     private int id;
     private String booktitle;
@@ -51,7 +51,7 @@ public class BookDto implements SearchResultElementDto {
     
     
     
-    private Copies copies;
+    private CopiesDto copies;
     
     
 
@@ -96,7 +96,7 @@ public class BookDto implements SearchResultElementDto {
     }
 
     @XmlElement
-    public Copies getCopies() {
+    public CopiesDto getCopies() {
         return copies;
     }
 
@@ -149,7 +149,7 @@ public class BookDto implements SearchResultElementDto {
     public void setCopies(List<BookcopyDto> copies) {
     this.copies = copies;
     }*/
-    public void setCopies(Copies copies) {
+    public void setCopies(CopiesDto copies) {
         this.copies = copies;
     }
     

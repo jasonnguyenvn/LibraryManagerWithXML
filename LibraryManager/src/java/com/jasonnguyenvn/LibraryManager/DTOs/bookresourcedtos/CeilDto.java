@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Hau
  */
-@XmlRootElement
+@XmlRootElement(name = "ceil")
 public class CeilDto implements Serializable {
     private int id;
     private int row;

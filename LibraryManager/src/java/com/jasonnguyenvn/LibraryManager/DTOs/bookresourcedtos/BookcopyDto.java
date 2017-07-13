@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Hau
  */
-@XmlRootElement
+@XmlRootElement(name = "bookcopy")
 public class BookcopyDto implements Serializable {
     private int id;
     private String code;

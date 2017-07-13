@@ -6,30 +6,24 @@
 
 package com.jasonnguyenvn.LibraryManager.servlets.services;
 
-import com.jasonnguyenvn.LibraryManager.DAOs.BookResourceDao;
-import com.jasonnguyenvn.LibraryManager.DTOs.SearchPagingDto;
+import com.jasonnguyenvn.LibraryManager.DAOs.BookResourceDao;;
 import com.jasonnguyenvn.LibraryManager.DTOs.bookresourcedtos.BookDto;
+import com.jasonnguyenvn.LibraryManager.DTOs.bookresourcedtos.BookItemsDto;
+import com.jasonnguyenvn.LibraryManager.DTOs.bookresourcedtos.BookSearchPagingDto;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
-import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 /**
  * REST Web Service
  *
@@ -60,19 +54,18 @@ public class BookResource {
      * @param searchvalue Value to search
      * @param pagesize The size of page
      * @param page The page to get
-     * @param response
-     * @return an instance of java.lang.String
+     * @return an instance of SearchPagingDto
      */
     @Path("search")
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    public Collection<BookDto> search(
+    public BookSearchPagingDto search(
            @DefaultValue(SEARCH_BY_BOOKTITLE) @QueryParam("searchby") String searchby,
            @DefaultValue("") @QueryParam("searchvalue") String searchvalue,
            @DefaultValue("100") @QueryParam("pagesize") Integer pagesize,
-           @DefaultValue("1") @QueryParam("pagesize") Integer page
+           @DefaultValue("1") @QueryParam("page") Integer page
         ) {
-        Collection<BookDto> searchResult = null;
+        BookSearchPagingDto  searchResult = null;
         BookResourceDao dao = new BookResourceDao();
         try {
             
@@ -87,8 +80,11 @@ public class BookResource {
             } else if (searchby.equals(SEARCH_BY_YEAR)) {
                 dao.searchByYear(searchvalue, pagesize, page);
             }
-                    
             searchResult = dao.getSearchResult();
+            searchResult.setPage(page);
+            searchResult.setPagesize(pagesize);
+            searchResult.setSearchby(searchby);
+            searchResult.setSearchvalue(searchvalue);
         } catch (SQLException ex) {
             Logger.getLogger(BookResource.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NamingException ex) {
@@ -97,13 +93,14 @@ public class BookResource {
             Logger.getLogger(BookResource.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        if (searchResult == null) {
-            return  null;
-        }
-        
         return searchResult;
     }
     
+     /**
+     * Retrieves representation of an instance of com.jasonnguyenvn.LibraryManager.servlets.services.BookResource
+     * @param id The id of book record.
+     * @return an instance of BookDto.
+     */
     @Path("getInfo")
     @GET
     @Produces(MediaType.APPLICATION_XML)

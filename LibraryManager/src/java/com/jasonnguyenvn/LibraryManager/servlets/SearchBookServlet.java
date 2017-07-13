@@ -46,10 +46,20 @@ public class SearchBookServlet extends HttpServlet {
             String txtSearchValue = request.getParameter("txtSearchValue").trim();
             String cbxSearchBy = request.getParameter("cbxSearchBy").trim().toUpperCase();
             
+            String pageStr = request.getParameter("page");
+            int page = 1;
+            if (pageStr != null) {
+                page = Integer.parseInt(pageStr);
+            }
+            
+            String pageSizeStr = request.getParameter("pagesize");
+            int pageSize = 10;
+            if (pageStr != null) {
+                pageSize = Integer.parseInt(pageSizeStr);
+            }
+            
             String apiUrl = LibraryManagerConstants.API_URL;
-            System.out.println("ahihi " + txtSearchValue);
             String searchValue = URLEncoder.encode(txtSearchValue, "UTF-8");
-            System.out.println("searchValue " + searchValue);
             
             Client client = ClientBuilder.newClient();
             WebTarget target = client.target(apiUrl);
@@ -57,6 +67,8 @@ public class SearchBookServlet extends HttpServlet {
                     target.path( LibraryManagerConstants.BOOK_SEARCH_METHOD)
                     .queryParam("searchby", cbxSearchBy)
                     .queryParam("searchvalue",searchValue)
+                    .queryParam("page", page)
+                    .queryParam("pagesize", pageSize)
                     .request("").get(String.class);
             
             request.setAttribute("SEARCHRESULT", result);

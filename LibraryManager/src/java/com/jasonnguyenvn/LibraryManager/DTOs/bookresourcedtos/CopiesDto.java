@@ -15,13 +15,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Hau
  */
 @XmlRootElement(name = "copies")
-public class Copies {
+public class CopiesDto {
     private List<BookcopyDto> bookcopy;
 
-    public Copies() {
+    public CopiesDto() {
     }
 
-    public Copies(List<BookcopyDto> bookcopy) {
+    public CopiesDto(List<BookcopyDto> bookcopy) {
         this.bookcopy = bookcopy;
     }
 

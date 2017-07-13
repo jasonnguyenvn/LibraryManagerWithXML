@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author Hau
  */
-@XmlRootElement
+@XmlRootElement(name = "bookshelf")
 public class BookshelfDto implements Serializable  {
     private int id;
     private String title;

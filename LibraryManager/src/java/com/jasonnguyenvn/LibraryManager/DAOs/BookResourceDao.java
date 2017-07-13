@@ -6,10 +6,12 @@
 package com.jasonnguyenvn.LibraryManager.DAOs;
 
 import com.jasonnguyenvn.LibraryManager.DTOs.bookresourcedtos.BookDto;
+import com.jasonnguyenvn.LibraryManager.DTOs.bookresourcedtos.BookItemsDto;
+import com.jasonnguyenvn.LibraryManager.DTOs.bookresourcedtos.BookSearchPagingDto;
 import com.jasonnguyenvn.LibraryManager.DTOs.bookresourcedtos.BookcopyDto;
 import com.jasonnguyenvn.LibraryManager.DTOs.bookresourcedtos.BookshelfDto;
 import com.jasonnguyenvn.LibraryManager.DTOs.bookresourcedtos.CeilDto;
-import com.jasonnguyenvn.LibraryManager.DTOs.bookresourcedtos.Copies;
+import com.jasonnguyenvn.LibraryManager.DTOs.bookresourcedtos.CopiesDto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,9 +33,9 @@ public class BookResourceDao extends AbstractDbDao {
     
     
     
-    private List<BookDto> searchResult;
+    private BookSearchPagingDto searchResult;
 
-    public List<BookDto> getSearchResult() {
+    public BookSearchPagingDto getSearchResult() {
         return searchResult;
     }
     
@@ -218,17 +220,18 @@ public class BookResourceDao extends AbstractDbDao {
                 public PreparedStatement process(Connection con) throws SQLException {
                     PreparedStatement stm = null;
                     if (con != null) {
-                        String sql = "SELECT * FROM ( "
-                        + " SELECT TOP 1000 ROW_NUMBER() OVER (ORDER BY [id]) as rowNum,  "
+                        int offset = 1 + (page - 1)*3;
+                        String sql = "SELECT  * FROM ( "
+                        + " SELECT TOP 1000 ROW_NUMBER() OVER (ORDER BY [id]) as rowNum, "
                         + " [id],[booktitle],[author],[price],[description], "
                         + " [year],[publisher],[tags] "
                         + " FROM [book] "
                         + " WHERE [book].[" + this.searchBy + "] LIKE ? "
-                        + " ) AS R1 WHERE [R1].[rowNum] BETWEEN ? AND ?;";
+                        + " ) AS R1 WHERE [R1].[rowNum] BETWEEN ? AND ? ;";
                         stm = con.prepareStatement(sql);
                         stm.setString(1, "%" + this.searchValue + "%");
-                        stm.setInt(2, page);
-                        stm.setInt(3, pageSize);
+                        stm.setInt(2, offset);
+                        stm.setInt(3, offset+pageSize-1);
 
                     }
 
@@ -279,13 +282,14 @@ public class BookResourceDao extends AbstractDbDao {
     private AbstractDbDao.ProcessResultSetCallback<List<BookDto>> processSearchStmResult
             = new ProcessResultSetCallback<List<BookDto>>() {
 
-                public List<BookDto> process(ResultSet rs) throws SQLException, NamingException {
-                    int firstRow = -1;
+                public List<BookDto> process(ResultSet rs) 
+                        throws SQLException, NamingException {
+                    int rowNum = -1;
                     List<BookDto> resultList = new ArrayList<BookDto>();
 
                     while (rs.next()) {
-                        if (firstRow == -1) {
-                            firstRow = rs.getInt("rowNum");
+                        if (rowNum == -1) {
+                            rowNum = rs.getInt("rowNum");
                         }
                         int id = rs.getInt("id");
                         String booktitle = rs.getString("booktitle");
@@ -294,45 +298,113 @@ public class BookResourceDao extends AbstractDbDao {
                         String description = rs.getString("description");
                         int year = rs.getInt("year");
                         String publisher = rs.getString("publisher");
-                        String tags = rs.getString("tags");
-
+                        String tags = rs.getString("tags"); 
                         BookDto dto = new BookDto(id, booktitle, author, price,
                                 description, year, publisher, tags);
                         dto.setCopies(
-                              new Copies(
+                              new CopiesDto(
                               executeSelect(prepareGetBookCopiesStm,
                                         processGetBookCopiesStmRS, id)
                               )
                         );
                         resultList.add(dto);
                     }
+                    
+                    
                     return resultList;
                 }
 
             };
+    
+    private AbstractDbDao.PrepareStatementCallback prepareCountSearchStm
+            = new PrepareStatementCallback() {
+                private String searchValue;
+                private String searchBy;
+
+                public PreparedStatement process(Connection con) throws SQLException {
+                    PreparedStatement stm = null;
+                    if (con != null) {
+                        String sql = "SELECT TOP 1000 COUNT([id]) as total "
+                        + " FROM [book] "
+                        + " WHERE [book].[" + this.searchBy + "] LIKE ? ";
+                        stm = con.prepareStatement(sql);
+                        stm.setString(1, "%" + this.searchValue + "%");
+                    }
+
+                    return stm;
+                }
+
+                public void setParameters(Object... parameters) {
+                    if (parameters == null) {
+                        return;
+                    }
+                    if (parameters.length < 1) {
+                        return;
+                    }
+
+                    if (parameters[0] != null) {
+                        if (parameters[0] instanceof String) {
+                            this.searchBy = (String) parameters[0];
+                        }
+                    }
+
+                    if (parameters[1] != null) {
+                        if (parameters[1] instanceof String) {
+                            this.searchValue = (String) parameters[1];
+                        }
+                    }
+                }
+            };
+
+    private AbstractDbDao.ProcessResultSetCallback<Integer> processCountSearchStmResult
+            = new ProcessResultSetCallback<Integer>() {
+
+                public Integer process(ResultSet rs) 
+                        throws SQLException, NamingException {
+                    if (rs.next()) {
+                        return rs.getInt("total");
+                    }
+                    
+                    
+                    return 0;
+                }
+
+            };
+    
+    protected void searchBook(String searchby,String searchValue, 
+            Integer pageSize, Integer page) throws SQLException, NamingException {
+        List<BookDto> resultList = this.executeSelect(prepareStmForSearchStm,
+                processSearchStmResult, searchby, searchValue, pageSize, page);
+        int total = executeSelect(prepareCountSearchStm, processCountSearchStmResult, 
+                searchby, searchValue);
+        this.searchResult = new BookSearchPagingDto(total, 
+                            new BookItemsDto(resultList)
+                    );
+    }
+
 
     public void searchByBookTitle(String searchValue, Integer pageSize,
             Integer page) throws SQLException, NamingException {
-        this.searchResult = this.executeSelect(prepareStmForSearchStm,
-                processSearchStmResult, "booktitle", searchValue, pageSize, page);
+        String searchby = "booktitle";
+        this.searchBook(searchby, searchValue, pageSize, page);
     }
 
     public void searchByAuthor(String searchValue, Integer pageSize,
             Integer page) throws SQLException, NamingException {
-        this.searchResult = this.executeSelect(prepareStmForSearchStm,
-                processSearchStmResult, "author", searchValue, pageSize, page);
+        String searchby = "author";
+        this.searchBook(searchby, searchValue, pageSize, page);
     }
 
     public void searchByPublisher(String searchValue, Integer pageSize,
             Integer page) throws SQLException, NamingException {
-        this.searchResult = this.executeSelect(prepareStmForSearchStm,
-                processSearchStmResult, "publisher", searchValue, pageSize, page);
+        String searchby = "publisher";
+        this.searchBook(searchby, searchValue, pageSize, page);
     }
     
     public void searchByYear(String searchValue, Integer pageSize,
             Integer page) throws SQLException, NamingException {
-        this.searchResult = this.executeSelect(prepareStmForSearchStm,
-                processSearchStmResult, "year", searchValue, pageSize, page);
+        String searchby = "year";
+        this.searchBook(searchby, searchValue, pageSize, page);
     }
     
     // CODE to get BOOK detail :
@@ -388,7 +460,7 @@ public class BookResourceDao extends AbstractDbDao {
                     BookDto dto = new BookDto(id, booktitle, author, price,
                             description, year, publisher, tags);
                     dto.setCopies(
-                          new Copies(
+                          new CopiesDto(
                           executeSelect(prepareGetBookCopiesStm,
                                     processGetBookCopiesStmRS, id)
                           )
