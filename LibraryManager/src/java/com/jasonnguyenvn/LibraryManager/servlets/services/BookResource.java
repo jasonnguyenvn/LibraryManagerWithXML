@@ -78,7 +78,6 @@ public class BookResource {
             
             System.out.println("SEARCH " + searchvalue);
             searchvalue = URLDecoder.decode(searchvalue, "UTF-8");
-            System.out.println("SEARCH " + searchvalue);
             if (searchby.equals(SEARCH_BY_BOOKTITLE)) {
                 dao.searchByBookTitle(searchvalue, pagesize, page);
             } else if (searchby.equals(SEARCH_BY_AUTHOR)) {
@@ -103,6 +102,27 @@ public class BookResource {
         }
         
         return searchResult;
+    }
+    
+    @Path("getInfo")
+    @GET
+    @Produces(MediaType.APPLICATION_XML)
+    public BookDto search(
+            @QueryParam("id") int id
+        ) {
+        BookDto result = null;
+        
+        BookResourceDao dao = new BookResourceDao();
+        try {
+            dao.getBookById(id);
+            result = dao.getBookDto();
+        } catch (SQLException ex) {
+            Logger.getLogger(BookResource.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NamingException ex) {
+            Logger.getLogger(BookResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return result;
     }
     
 

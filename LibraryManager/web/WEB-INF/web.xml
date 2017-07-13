@@ -37,6 +37,10 @@
         <servlet-name>SearchBookServlet</servlet-name>
         <servlet-class>com.jasonnguyenvn.LibraryManager.servlets.SearchBookServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewBookInfoServlet</servlet-name>
+        <servlet-class>com.jasonnguyenvn.LibraryManager.servlets.ViewBookInfoServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -60,6 +64,10 @@
     <servlet-mapping>
         <servlet-name>SearchBookServlet</servlet-name>
         <url-pattern>/SearchBookServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewBookInfoServlet</servlet-name>
+        <url-pattern>/ViewBookInfoServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

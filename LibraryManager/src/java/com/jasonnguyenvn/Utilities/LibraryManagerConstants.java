@@ -13,5 +13,6 @@ package com.jasonnguyenvn.Utilities;
 public class LibraryManagerConstants {
     public static final String API_URL = "http://localhost:8080/LibraryManager/api";
     public static final String BOOK_SEARCH_METHOD = "/book/search";
+    public static final String BOOK_GET_INFO_METHOD = "/book/getInfo";
     
 }

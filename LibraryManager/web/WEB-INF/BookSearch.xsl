@@ -24,7 +24,7 @@
             <xsl:for-each select="bookDto" >
                 <div class="book-card">
                     <a class="clear-a">
-                        <xsl:attribute name="href">/viewBookInfo?id=<xsl:value-of select="id"/></xsl:attribute>
+                        <xsl:attribute name="href">viewBookInfo?id=<xsl:value-of select="id"/></xsl:attribute>
                         <div class="card-head">
                                     <xsl:value-of select="booktitle"/>
                         </div>
@@ -56,7 +56,9 @@
                                 </div>
                             </div>
                             <div class="description-container">
-                                <div>Miêu tả:</div>
+                                <div>
+                                    <b>Miêu tả:</b>
+                                </div>
                                 <div class="description">
                                     <xsl:value-of select="description"/>
                                 </div>
@@ -64,8 +66,10 @@
                         </div>
                         <div class="card-foot">
                             <div class="left-col">
-                                 Có <xsl:value-of select="count(copies/bookcopy)"/> 
+                                <b> 
+                                Có <xsl:value-of select="count(copies/bookcopy)"/> 
                                     cuốn trong thư viện.
+                                </b>
                             </div>
                             <div class="right-col">
                             </div>

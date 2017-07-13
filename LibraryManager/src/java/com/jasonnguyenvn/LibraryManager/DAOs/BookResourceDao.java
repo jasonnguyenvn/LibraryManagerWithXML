@@ -22,8 +22,15 @@ import javax.naming.NamingException;
  *
  * @author Hau
  */
-public class BookResourceDao extends AbstractDbDao {
+public class BookResourceDao extends AbstractDbDao { 
+    private BookDto bookDto;
 
+    public BookDto getBookDto() {
+        return bookDto;
+    }
+    
+    
+    
     private List<BookDto> searchResult;
 
     public List<BookDto> getSearchResult() {
@@ -326,6 +333,74 @@ public class BookResourceDao extends AbstractDbDao {
             Integer page) throws SQLException, NamingException {
         this.searchResult = this.executeSelect(prepareStmForSearchStm,
                 processSearchStmResult, "year", searchValue, pageSize, page);
+    }
+    
+    // CODE to get BOOK detail :
+    private AbstractDbDao.PrepareStatementCallback prepareStmGetBook = 
+            new PrepareStatementCallback() {
+        private int id;
+        public void setParameters(Object... parameters) {
+            if (parameters == null) {
+                return;
+            }
+            if (parameters.length < 1) {
+                return;
+            }
+
+            if (parameters[0] != null) {
+                if (parameters[0] instanceof Integer) {
+                    this.id = (Integer) parameters[0];
+                }
+            }
+        }
+
+        public PreparedStatement process(Connection con) throws SQLException {
+            PreparedStatement stm = null;
+            if (con != null) {
+                String sql = " SELECT   "
+                        + " [id],[booktitle],[author],[price],[description], "
+                        + " [year],[publisher],[tags] "
+                        + " FROM [book] "
+                        + " WHERE [book].[id]=?";
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, id);
+
+            }
+            return stm;
+        }
+        
+    };
+    
+    private AbstractDbDao.ProcessResultSetCallback<BookDto> processGetBookRs = 
+            new ProcessResultSetCallback<BookDto>() {
+
+        public BookDto process(ResultSet rs) throws SQLException, NamingException {
+                if (rs.next()) {
+                    int id = rs.getInt("id");
+                    String booktitle = rs.getString("booktitle");
+                    String author = rs.getString("author");
+                    Double price = rs.getDouble("price");
+                    String description = rs.getString("description");
+                    int year = rs.getInt("year");
+                    String publisher = rs.getString("publisher");
+                    String tags = rs.getString("tags");
+
+                    BookDto dto = new BookDto(id, booktitle, author, price,
+                            description, year, publisher, tags);
+                    dto.setCopies(
+                          new Copies(
+                          executeSelect(prepareGetBookCopiesStm,
+                                    processGetBookCopiesStmRS, id)
+                          )
+                    );
+                    return dto;
+                }
+                return null;
+        }
+    };
+    
+    public void getBookById(int id) throws SQLException, NamingException {
+        this.bookDto = this.executeSelect(prepareStmGetBook, processGetBookRs, id);
     }
 
 }
