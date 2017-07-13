@@ -21,29 +21,40 @@
                     Thông tin chi tiết:
                     <xsl:value-of select="booktitle" />
                 </title>
+                
+                <link rel="stylesheet" media="screen" href="main.css" />
+
             </head>
             <body>
                 <style>
-                    body {
-                      background-color: #f4f4f4;
-                    }
+                    
                     .book-info {
-                        width: 50%;
+                    width: 50%;
                     }
                     .book-info .row {
-                        width: 100%;
+                    width: 100%;
                     }
                     .book-info .row .left-col {
-                        width: 40%;
-                        min-width: 40%;
-                        display: inline;
+                    width: 40%;
+                    min-width: 40%;
+                    display: inline;
                     }
                     .book-info .row .right-col {
-                        width: 60%;
-                        min-width: 60%;
-                        display: inline;
+                    width: 60%;
+                    min-width: 60%;
+                    display: inline;
                     }
+                    
                 </style>
+                <div id="nav-bar">
+                    <div class="nav-bar-wrapper">
+                        <div id="logo">
+                            <a href="./">
+                                Trang chủ
+                            </a>
+                        </div>
+                    </div>
+                </div>
                 <h1>
                     <xsl:value-of select="booktitle" />
                 </h1>
@@ -72,6 +83,14 @@
                             <xsl:value-of select="year"/>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="left-col">
+                            Giá bìa:
+                        </div>
+                        <div class="right-col">
+                            <xsl:value-of select="price"/> đ
+                        </div>
+                    </div>
                     <hr/>
                     <div class="description-container">
                         <div>
@@ -85,35 +104,38 @@
                 
                 
                 <div class="list-of-copies">
-                    <p><b>Có <xsl:value-of select="count(copies/bookcopy)"/>
-                    bản trong thư viện.</b>
+                    <p>
+                        <b>Có <xsl:value-of select="count(copies/bookcopy)"/>
+                            bản trong thư viện.</b>
                     </p>
                     <xsl:if test="count(copies/bookcopy) &gt; 0" >
-                    <table border="1">
-                        <thead>
-                            <tr>
-                                <th>Mã</th>
-                                <th>Vị trí</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <xsl:for-each select="copies/bookcopy" >
+                        <table border="1">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        <xsl:value-of select="code"/>
-                                    </td>
-                                    <td>
-                                        Ô <b><xsl:value-of select="storedin/col"/>
-                                        <xsl:value-of select="storedin/row"/></b>
-                                        thộc kệ sách:
-                                        <b>
-                                            <xsl:value-of select="storedin/ceilof/title"/>
-                                        </b>
-                                    </td>
+                                    <th>Mã</th>
+                                    <th>Vị trí</th>
                                 </tr>
-                            </xsl:for-each>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <xsl:for-each select="copies/bookcopy" >
+                                    <tr>
+                                        <td>
+                                            <xsl:value-of select="code"/>
+                                        </td>
+                                        <td>
+                                            Ô <b>
+                                                <xsl:value-of select="storedin/col"/>
+                                                <xsl:value-of select="storedin/row"/>
+                                            </b>
+                                            thộc kệ sách:
+                                            <b>
+                                                <xsl:value-of select="storedin/ceilof/title"/>
+                                            </b>
+                                        </td>
+                                    </tr>
+                                </xsl:for-each>
+                            </tbody>
+                        </table>
                     </xsl:if>
                 </div>
             </body>

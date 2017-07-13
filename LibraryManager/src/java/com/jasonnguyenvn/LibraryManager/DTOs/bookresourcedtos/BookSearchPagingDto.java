@@ -92,7 +92,7 @@ public class BookSearchPagingDto {
     }
 
     public void setSearchby(String searchby) {
-        this.searchby = searchby;
+        this.searchby = searchby.toLowerCase();
     }
 
     public void setSearchvalue(String searchvalue) throws UnsupportedEncodingException {

@@ -40,6 +40,7 @@ public class SearchBookServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
@@ -53,11 +54,11 @@ public class SearchBookServlet extends HttpServlet {
             }
             
             String pageSizeStr = request.getParameter("pagesize");
-            int pageSize = 10;
+            int pageSize = 8;
             if (pageStr != null) {
                 pageSize = Integer.parseInt(pageSizeStr);
             }
-            
+            System.out.println("txtSearchValue " + txtSearchValue);
             String apiUrl = LibraryManagerConstants.API_URL;
             String searchValue = URLEncoder.encode(txtSearchValue, "UTF-8");
             

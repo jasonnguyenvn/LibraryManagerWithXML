@@ -21,6 +21,9 @@
         <xsl:param name="searchValue"/>
         
         <xsl:if test="$i &lt;= $totalSize"> 
+            <xsl:if test="$i != 1"> 
+                |
+            </xsl:if>
             <xsl:choose>
                 <xsl:when test="$i = $curPage">
                     <b><xsl:value-of select="$i" /></b>
@@ -33,9 +36,6 @@
                     </a>
                 </xsl:otherwise>
             </xsl:choose>
-            <xsl:if test="$i &lt; $totalSize"> 
-                |
-            </xsl:if>
             <xsl:call-template name="doPaging"> 
                 <xsl:with-param name="i" select="$i + 1"/> 
                 <xsl:with-param name="curPage" select="$curPage"/> 
@@ -86,6 +86,14 @@
                                             <xsl:value-of select="year"/>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="left-col">
+                                            Giá bìa
+                                        </div>
+                                        <div class="right-col">
+                                            <xsl:value-of select="price"/> đ
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="description-container">
                                     <div>
@@ -114,14 +122,16 @@
         
         <div class="paging-container">
             <div class="paging-wrapper">
-            <xsl:call-template name="doPaging"> 
-                    <xsl:with-param name="i" select="number(1)"/> 
-                    <xsl:with-param name="curPage" select="page"/> 
-                    <xsl:with-param name="totalSize" select="totalsize div pagesize"/> 
-                    <xsl:with-param name="pageSize" select="pagesize"/> 
-                    <xsl:with-param name="searchBy" select="searchby"/> 
-                    <xsl:with-param name="searchValue" select="searchvalue"/> 
-            </xsl:call-template> 
+                <xsl:if test="totalsize &gt; pagesize">
+                    <xsl:call-template name="doPaging"> 
+                            <xsl:with-param name="i" select="number(1)"/> 
+                            <xsl:with-param name="curPage" select="page"/> 
+                            <xsl:with-param name="totalSize" select="totalsize div pagesize + totalsize mod pagesize"/> 
+                            <xsl:with-param name="pageSize" select="pagesize"/> 
+                            <xsl:with-param name="searchBy" select="searchby"/> 
+                            <xsl:with-param name="searchValue" select="searchvalue"/> 
+                    </xsl:call-template> 
+                </xsl:if>
             </div>
         </div>
        
@@ -131,11 +141,10 @@
                 min-width: 100%;
                 position: relative;
                 display: flex;
-                padding: auto;
             }
             
             .paging-container {
-                width: 300px;
+                min-height: 100px;
                 margin-top: 10px;
             }
             
@@ -145,7 +154,7 @@
                 overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
-                font-size: 12pt;
+                font-size: 14pt;
             }
             .search-result-container {
                 max-width: 100%;
@@ -200,7 +209,7 @@
             .book-card .description-container .description {
                 width: 100%;
                 max-height: 150px;
-                min-height: 100px;
+                min-height: 90px;
                 overflow: hidden;
                 white-space: pre-wrap;
                 text-overflow: ellipsis;
@@ -224,6 +233,7 @@
             }
             .book-card .card-foot {
                 margin-top: 5px;
+                padding: 10px;
                 display: block;
                 position: relative;
                 width: 100%;

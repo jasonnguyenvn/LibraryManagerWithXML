@@ -220,7 +220,7 @@ public class BookResourceDao extends AbstractDbDao {
                 public PreparedStatement process(Connection con) throws SQLException {
                     PreparedStatement stm = null;
                     if (con != null) {
-                        int offset = 1 + (page - 1)*3;
+                        int offset = 1 + (page - 1)*pageSize;
                         String sql = "SELECT  * FROM ( "
                         + " SELECT TOP 1000 ROW_NUMBER() OVER (ORDER BY [id]) as rowNum, "
                         + " [id],[booktitle],[author],[price],[description], "

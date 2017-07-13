@@ -12,15 +12,20 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Kết quả tìm kiếm</title>
+        <link rel="stylesheet" href="main.css" />
     </head>
     <body>
-        <style>
-            body {
-                    background-color: #f4f4f4;
-            }
-        </style>
+        <div id="nav-bar">
+            <div class="nav-bar-wrapper">
+            <div id="logo">
+                <a href="./">
+                Trang chủ
+                </a>
+            </div>
+            </div>
+        </div>
         <div id="searchBox">
-            <form action="searchBook"  accept-charset="UTF-8" method="post">
+            <form action="searchBook"  accept-charset="UTF-8" method="get">
                 <div id="searchControlCont">
                     <input type="text" name="txtSearchValue" value="${param.txtSearchValue}">
                     <input type="submit" name="btnAction" value="Tìm">
