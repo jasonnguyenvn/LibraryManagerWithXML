@@ -18,17 +18,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class BookshelfDto implements Serializable  {
     private int id;
     private String title;
-    private String description;
-    private String tags;
-
+    
     public BookshelfDto() {
     }
 
-    public BookshelfDto(int id, String title, String description, String tags) {
+    public BookshelfDto(int id, String title) {
         this.id = id;
         this.title = title;
-        this.description = description;
-        this.tags = tags;
     }
     
     
@@ -43,15 +39,7 @@ public class BookshelfDto implements Serializable  {
         return title;
     }
 
-    @XmlElement
-    public String getDescription() {
-        return description;
-    }
-
-    @XmlElement
-    public String getTags() {
-        return tags;
-    }
+   
 
     public void setId(int id) {
         this.id = id;
@@ -60,17 +48,6 @@ public class BookshelfDto implements Serializable  {
     public void setTitle(String title) {
         this.title = title;
     }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setTags(String tags) {
-        this.tags = tags;
-    }
-    
-    
-    
     
     
 }

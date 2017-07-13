@@ -71,7 +71,7 @@ public class BookResourceDao extends AbstractDbDao {
                 String title = rs.getString("title");
                 String description = rs.getString("description");
                 String tags = rs.getString("tags");
-                return new BookshelfDto(id, title, description, tags);
+                return new BookshelfDto(id, title);
             }
             return null;
         }
@@ -124,7 +124,7 @@ public class BookResourceDao extends AbstractDbDao {
                 String description = rs.getString("description");
                 int size = rs.getInt("size");
                 String tags = rs.getString("tags");
-                CeilDto dto = new CeilDto(id, row, col, description, size, tags);
+                CeilDto dto = new CeilDto(id, row, col);
                 
                 int bookshelfid = rs.getInt("bookshelfid");
                 dto.setCeilof(

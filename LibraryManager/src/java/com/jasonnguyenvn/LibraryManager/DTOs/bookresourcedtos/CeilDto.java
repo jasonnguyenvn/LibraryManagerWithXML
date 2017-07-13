@@ -19,20 +19,14 @@ public class CeilDto implements Serializable {
     private int id;
     private int row;
     private String col;
-    private String description;
-    private int size;
-    private String tags;
 
     public CeilDto() {
     }
 
-    public CeilDto(int id, int row, String col, String description, int size, String tags) {
+    public CeilDto(int id, int row, String col) {
         this.id = id;
         this.row = row;
         this.col = col;
-        this.description = description;
-        this.size = size;
-        this.tags = tags;
     }
     
     
@@ -54,20 +48,6 @@ public class CeilDto implements Serializable {
         return col;
     }
 
-    @XmlElement
-    public String getDescription() {
-        return description;
-    }
-
-    @XmlElement
-    public int getSize() {
-        return size;
-    }
-
-    @XmlElement
-    public String getTags() {
-        return tags;
-    }
 
     @XmlElement
     public BookshelfDto getCeilof() {
@@ -89,17 +69,6 @@ public class CeilDto implements Serializable {
         this.col = col;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    public void setTags(String tags) {
-        this.tags = tags;
-    }
 
     public void setCeilof(BookshelfDto ceilof) {
         this.ceilof = ceilof;

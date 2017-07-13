@@ -14,19 +14,32 @@
         <title>Kết quả tìm kiếm</title>
     </head>
     <body>
+        <style>
+            body {
+                    background-color: #f4f4f4;
+            }
+        </style>
         <div id="searchBox">
             <form action="searchBook"  accept-charset="UTF-8" method="post">
                 <div id="searchControlCont">
-                    <input type="text" name="txtSearchValue" id="txtSearchValue">
+                    <input type="text" name="txtSearchValue" value="${param.txtSearchValue}">
                     <input type="submit" name="btnAction" value="Tìm">
                 </div>
                 <div id="searchFilterCont">
                 Tìm kiếm bằng:
                     <select name="cbxSearchBy" required>
-                        <option value="booktitle">Tựa sách</option>
-                        <option value="author">Tác giả</option>
-                        <option value="publisher">Nhà xuất bản</option>
-                        <option value="year">Năm xuất bản</option>
+                        <option value="booktitle"
+                            <c:if test="${param.cbxSearchBy == 'booktitle'}">selected="selected"</c:if>
+                        >Tựa sách</option>
+                        <option value="author"
+                            <c:if test="${param.cbxSearchBy == 'author'}">selected="selected"</c:if>
+                        >Tác giả</option>
+                        <option value="publisher"
+                            <c:if test="${param.cbxSearchBy == 'publisher'}">selected="selected"</c:if>
+                        >Nhà xuất bản</option>
+                        <option value="year"
+                            <c:if test="${param.cbxSearchBy == 'year'}">selected="selected"</c:if>
+                        >Năm xuất bản</option>
                      </select>
                 </div>
             </form>
@@ -34,7 +47,9 @@
         <div id="main">
             <h1>Kết quả tìm kiếm</h1>
             <c:import url="WEB-INF/BookSearch.xsl"  var="xsldoc" charEncoding="UTF-8" />
+            Từ khóa tìm kiếm <b>"${param.txtSearchValue}"</b>
             <x:transform xml="${requestScope.SEARCHRESULT}" xslt="${xsldoc}" />
-        </div>
+        </div> 
+
     </body>
 </html>
