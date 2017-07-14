@@ -15,7 +15,8 @@
          syntax recommendation http://www.w3.org/TR/xslt 
     -->
     <xsl:template match="book">
-        <xsl:param name="userXml" />
+        <xsl:param name="userFullname" />
+        
         <html>
             <head>
                 <title>
@@ -46,6 +47,17 @@
                     display: inline;
                     }
                     
+                    .book-title {
+                    font-size: 14pt;
+                    font-weight: bold;
+                    }
+                    
+                    .book-action {
+                    display:block;
+                    float: right;
+                    }
+                
+                    
                 </style>
                 <div id="nav-bar">
                     <div class="nav-bar-wrapper">
@@ -54,12 +66,41 @@
                                 Trang chủ
                             </a>
                         </div>
+                        <div id="userInfo">
+                            
+                            <xsl:if test="$userFullname != ''">
+                                Xin chào, 
+                                <b>
+                                    <xsl:value-of select="$userFullname" />
+                                </b>
+                            </xsl:if>
+                        </div>
                     </div>
                 </div>
-                <h1>
-                    <xsl:value-of select="booktitle" />
-                </h1>
+                
                 <div class="book-info">
+                    <div class="book-info-head">
+                        <span class="book-title">
+                            <xsl:value-of select="booktitle" />
+                        </span>
+                        
+                        <xsl:if test="$userFullname != ''">
+                            <xsl:variable name="testAvailable" select="isavailabletoborrow/result" />
+                            <xsl:if test="$testAvailable = &quot;true&quot;" >
+                                <div class="book-action" >
+                                    <form action="registerBorrow" method="post">
+                                        <input type="hidden" name="txtBookid">
+                                            <xsl:attribute name="value">
+                                                <xsl:value-of select="id"/>
+                                            </xsl:attribute>
+                                        </input>
+                                        <input type="submit" name="btnAction" value="Đăng ký mượn" />
+                                    </form>
+                                </div>
+                            </xsl:if>
+                        </xsl:if>
+                    
+                    </div>
                     <div class="row">
                         <div class="left-col">
                             Tác giả:

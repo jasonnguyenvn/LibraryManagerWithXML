@@ -18,7 +18,7 @@ import javax.naming.NamingException;
  * @author Hau
  */
 public abstract class AbstractDbDao {
-    public static interface PrepareStatementCallback<T> {
+    public static interface PrepareStatementCallback {
         void setParameters(Object ... parameters);
         PreparedStatement process(Connection con) throws SQLException;
     }

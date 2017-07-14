@@ -29,7 +29,9 @@ public class ApplicationConfig extends javax.ws.rs.core.Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(com.jasonnguyenvn.LibraryManager.servlets.services.BookResource.class);
+        resources.add(com.jasonnguyenvn.LibraryManager.servlets.services.BookResource.BookCheckAvailableResource.class);
+        resources.add(com.jasonnguyenvn.LibraryManager.servlets.services.BookResource.BookGetInforResource.class);
+        resources.add(com.jasonnguyenvn.LibraryManager.servlets.services.BookResource.BookSearchResource.class);
         resources.add(com.jasonnguyenvn.LibraryManager.servlets.services.UserResource.class);
     }
     

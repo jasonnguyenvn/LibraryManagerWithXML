@@ -32,6 +32,15 @@ body {
     height: 80%;
     margin-top: auto;
     margin-bottom: auto;
+    width: 250px;
+}
+#userInfo {
+    position: absolute;
+    right: 0;
+    top: 5px;
+    display: block;
+    float: right;
+    
 }
 #logo a {
     font-size: 16pt;
@@ -76,3 +85,5 @@ body {
 #searchControlCont .search-value {
     width: 80%;
 }
+
+

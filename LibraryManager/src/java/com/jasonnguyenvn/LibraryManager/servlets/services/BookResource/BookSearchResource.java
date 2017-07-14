@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.jasonnguyenvn.LibraryManager.servlets.services;
+package com.jasonnguyenvn.LibraryManager.servlets.services.BookResource;
 
 import com.jasonnguyenvn.LibraryManager.DAOs.BookResourceDao;;
 import com.jasonnguyenvn.LibraryManager.DTOs.bookresourcedtos.BookDto;
@@ -29,8 +29,8 @@ import javax.ws.rs.core.MediaType;
  *
  * @author Hau
  */
-@Path("book")
-public class BookResource {
+@Path("book/search")
+public class BookSearchResource {
 
     @Context
     private UriInfo context;
@@ -38,7 +38,7 @@ public class BookResource {
     /**
      * Creates a new instance of BookSearchResource
      */
-    public BookResource() {
+    public BookSearchResource() {
     }
     
     public static final String SEARCH_BY_BOOKTITLE = "BOOKTITLE";
@@ -49,14 +49,13 @@ public class BookResource {
     
     
     /**
-     * Retrieves representation of an instance of com.jasonnguyenvn.LibraryManager.servlets.services.BookResource
+     * Retrieves representation of an instance of com.jasonnguyenvn.LibraryManager.servlets.services.BookSearchResource
      * @param searchby Search books by title.
      * @param searchvalue Value to search
      * @param pagesize The size of page
      * @param page The page to get
      * @return an instance of SearchPagingDto
      */
-    @Path("search")
     @GET
     @Produces(MediaType.APPLICATION_XML)
     public BookSearchPagingDto search(
@@ -86,41 +85,17 @@ public class BookResource {
             searchResult.setSearchby(searchby);
             searchResult.setSearchvalue(searchvalue);
         } catch (SQLException ex) {
-            Logger.getLogger(BookResource.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BookSearchResource.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NamingException ex) {
-            Logger.getLogger(BookResource.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BookSearchResource.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(BookResource.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BookSearchResource.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return searchResult;
     }
     
-     /**
-     * Retrieves representation of an instance of com.jasonnguyenvn.LibraryManager.servlets.services.BookResource
-     * @param id The id of book record.
-     * @return an instance of BookDto.
-     */
-    @Path("getInfo")
-    @GET
-    @Produces(MediaType.APPLICATION_XML)
-    public BookDto search(
-            @QueryParam("id") int id
-        ) {
-        BookDto result = null;
-        
-        BookResourceDao dao = new BookResourceDao();
-        try {
-            dao.getBookById(id);
-            result = dao.getBookDto();
-        } catch (SQLException ex) {
-            Logger.getLogger(BookResource.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NamingException ex) {
-            Logger.getLogger(BookResource.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        return result;
-    }
+    
     
 
     

@@ -31,6 +31,8 @@ public class BookDto implements SearchResultElementDto {
     private String publisher;
     
     private String tags;
+    
+    private BookCheckAvailableDto availableDto;
 
     public BookDto() {
     }
@@ -52,8 +54,12 @@ public class BookDto implements SearchResultElementDto {
     
     
     private CopiesDto copies;
+
     
-    
+    @XmlElement(name = "isavailabletoborrow")
+    public BookCheckAvailableDto getAvailableDto() {
+        return availableDto;
+    }
 
     @XmlElement
     public int getId() {
@@ -152,6 +158,11 @@ public class BookDto implements SearchResultElementDto {
     public void setCopies(CopiesDto copies) {
         this.copies = copies;
     }
+
+    public void setAvailableDto(BookCheckAvailableDto availableDto) {
+        this.availableDto = availableDto;
+    }
+    
     
     
     

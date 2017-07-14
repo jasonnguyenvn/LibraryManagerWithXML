@@ -5,6 +5,7 @@
  */
 package com.jasonnguyenvn.LibraryManager.DAOs;
 
+import com.jasonnguyenvn.LibraryManager.DTOs.bookresourcedtos.BookCheckAvailableDto;
 import com.jasonnguyenvn.LibraryManager.DTOs.bookresourcedtos.BookDto;
 import com.jasonnguyenvn.LibraryManager.DTOs.bookresourcedtos.BookItemsDto;
 import com.jasonnguyenvn.LibraryManager.DTOs.bookresourcedtos.BookSearchPagingDto;
@@ -465,6 +466,11 @@ public class BookResourceDao extends AbstractDbDao {
                                     processGetBookCopiesStmRS, id)
                           )
                     );
+                    
+                    dto.setAvailableDto(
+                        executeSelect(prepareCheckAvailableStm, 
+                             processCheckAvailableStm, id)
+                    );
                     return dto;
                 }
                 return null;
@@ -473,6 +479,75 @@ public class BookResourceDao extends AbstractDbDao {
     
     public void getBookById(int id) throws SQLException, NamingException {
         this.bookDto = this.executeSelect(prepareStmGetBook, processGetBookRs, id);
+    }
+    
+    // check available to borrow
+    BookCheckAvailableDto availableToBorrow;
+
+    public BookCheckAvailableDto isAvailableToBorrow() {
+        return availableToBorrow;
+    }
+    
+    private AbstractDbDao.PrepareStatementCallback prepareCheckAvailableStm =
+            new PrepareStatementCallback() {
+        int bookid;
+
+        public void setParameters(Object... parameters) {
+            if (parameters == null) {
+                return;
+            }
+            if (parameters.length < 1) {
+                return;
+            }
+            if (parameters[0] != null) {
+                if (parameters[0] instanceof Integer) {
+                    this.bookid = (Integer) parameters[0];
+                }
+            }
+        }
+
+        public PreparedStatement process(Connection con) throws SQLException {
+            PreparedStatement stm = null;
+            if (con != null) {
+                String sql = "SELECT "
+                        + "Convert(Bit, "
+                        + "	Case When COUNT(id) < (SELECT COUNT([id]) "
+                        + "         FROM [LibraryManagerDB].[dbo].[bookcopy] "
+                        + "         where bookid=?) "
+                        + "	Then 1 Else 0 End) as test  "
+                        + "FROM  [bookcopy] "
+                        + "WHERE [bookcopy].id in ( "
+                        + "	SELECT [copyid] "
+                        + "	FROM [LibraryManagerDB].[dbo].[borrowedcopy] "
+                        + "	WHERE [borrowedcopy].appid "
+                        + "	in ("
+                        + "		SELECT [id] "
+                        + "		FROM [LibraryManagerDB].[dbo].[borrowapplication] "
+                        + "		WHERE [bookid]=?));";
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, bookid);
+                stm.setInt(2, bookid);
+
+            }
+            return stm;
+        }
+    };
+    
+    private AbstractDbDao.ProcessResultSetCallback<BookCheckAvailableDto> 
+            processCheckAvailableStm = new ProcessResultSetCallback<BookCheckAvailableDto>() {
+
+        public BookCheckAvailableDto process(ResultSet rs) throws SQLException, NamingException {
+            if (rs.next()) {
+                return  new BookCheckAvailableDto(rs.getBoolean("test"));
+            }
+            return new BookCheckAvailableDto(false);
+            
+        }
+    };
+    
+    public void checkAvailableToBorrow(int bookid) throws SQLException, NamingException {
+        this.availableToBorrow = executeSelect(prepareCheckAvailableStm, 
+                processCheckAvailableStm, bookid);
     }
 
 }
